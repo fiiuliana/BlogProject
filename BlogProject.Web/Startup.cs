@@ -1,3 +1,4 @@
+using BlogProject.Models.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,17 +13,20 @@ namespace BlogProject.Web
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
+                
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        //connect the model with the Cloudinary options
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.Configure<CloudinaryOptions>(Configuration.GetSection("CloudinaryOptions"));
+           // services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
