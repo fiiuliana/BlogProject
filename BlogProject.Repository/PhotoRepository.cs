@@ -76,7 +76,7 @@ namespace BlogProject.Repository
             var dataTable = new DataTable();
             dataTable.Columns.Add("PublicId", typeof(string));
             dataTable.Columns.Add("ImageUrl", typeof(string));
-            dataTable.Columns.Add("Descriptio", typeof(string));
+            dataTable.Columns.Add("Description", typeof(string));
 
             dataTable.Rows.Add(photoCreate.PublicId, photoCreate.ImageUrl, photoCreate.Description);
 

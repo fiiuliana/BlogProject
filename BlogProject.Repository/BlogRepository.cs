@@ -1,6 +1,10 @@
 ﻿using BlogProject.Models.Blog;
+using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,34 +13,133 @@ namespace BlogProject.Repository
 {
     public class BlogRepository : IBlogRepository
     {
-        public Task<int> DeleteAsync(int blogId)
+
+        private readonly IConfiguration _config;
+
+        public BlogRepository(IConfiguration config)
         {
-            throw new NotImplementedException();
+            _config = config;
+        }
+        public async Task<int> DeleteAsync(int blogId)
+        {
+            int affectedRows = 0;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                affectedRows = await connection.ExecuteAsync(
+                    "Blog_Delete",
+                    new { BlogId = blogId },
+                    commandType: CommandType.StoredProcedure);
+            }
+            return affectedRows;
         }
 
-        public Task<PagedResults<Blog>> getAllAsync(BlogPaging blogPaging)
+        public async Task<PagedResults<Blog>> getAllAsync(BlogPaging blogPaging)
         {
-            throw new NotImplementedException();
+            var results = new PagedResults<Blog>();
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                using (var multi = await connection.QueryMultipleAsync(
+                    "Blog_All",
+                    new
+                    {
+                        Offset = (blogPaging.Page - 1) * blogPaging.Pagesize,
+                        PageSize = blogPaging.Pagesize
+                    },
+                    commandType: CommandType.StoredProcedure))
+                {
+                    results.Items = multi.Read<Blog>();
+                    results.TotalCount = multi.ReadFirst<int>();
+                }
+            }
+            return results;
         }
 
-        public Task<List<Blog>> GetAllByUserIdAsync(int applicationUserId)
+        public async Task<List<Blog>> GetAllByUserIdAsync(int applicationUserId)
         {
-            throw new NotImplementedException();
+            IEnumerable<Blog> blogs;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                blogs = await connection.QueryAsync<Blog>(
+                    "Blog_GetByUserId",
+                    new { ApplicationUserId = applicationUserId },
+                    commandType: CommandType.StoredProcedure
+                    );
+            }
+            return blogs.ToList();
         }
 
-        public Task<List<Blog>> GetAllFamousAsync()
+        public async Task<List<Blog>> GetAllFamousAsync()
         {
-            throw new NotImplementedException();
+            IEnumerable<Blog> famousBlogs;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                famousBlogs = await connection.QueryAsync<Blog>(
+                    "Blog_GetAllFamous",
+                    //initialize an empty list
+                    new {  },
+                    commandType: CommandType.StoredProcedure
+                    );
+            }
+            return famousBlogs.ToList();
         }
 
-        public Task<Blog> GetAsync(int blogId)
+        public async Task<Blog> GetAsync(int blogId)
         {
-            throw new NotImplementedException();
+            Blog blog;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                blog = await connection.QueryFirstOrDefaultAsync<Blog>(
+                    "Blog_Get",
+                    new { BlogId = blogId },
+                    commandType: CommandType.StoredProcedure
+                    );
+            }
+            return blog;
         }
 
-        public Task<Blog> UpsertAsync(BlogCreate blogCreate, int applicationUserId)
+        public async Task<Blog> UpsertAsync(BlogCreate blogCreate, int applicationUserId)
         {
-            throw new NotImplementedException();
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("BlogId", typeof(int));
+            dataTable.Columns.Add("Title", typeof(string));
+            dataTable.Columns.Add("Content", typeof(string));
+            dataTable.Columns.Add("PhotoId", typeof(int));
+
+            dataTable.Rows.Add(blogCreate.blogId, blogCreate.Title, blogCreate.Content, blogCreate.PhotoId);
+
+            int? newBlogId;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                newBlogId = await connection.ExecuteScalarAsync<int?>(
+                    "Blog_Upsert",
+                    new
+                    {
+                        Blog = dataTable.AsTableValuedParameter("dbo.BlogType"),
+                        ApplicationUserId = applicationUserId
+                    },
+                    commandType: CommandType.StoredProcedure
+                    );
+            }
+            newBlogId = newBlogId ?? blogCreate.blogId;
+            Blog blog = await GetAsync(newBlogId.Value);
+            return blog;
         }
     }
 }
