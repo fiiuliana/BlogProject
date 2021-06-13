@@ -25,7 +25,9 @@ namespace BlogProject.Web
 
         public Startup(IConfiguration configuration)
         {
+            //clear defaults
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //before defining our own
             Configuration = configuration;
         }
                 
@@ -104,9 +106,11 @@ namespace BlogProject.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
+
+               // endpoints.MapControllerRoute(
+               //    name: "default",
+               //    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
