@@ -38,12 +38,15 @@ namespace BlogProject.Services
                     uploadResult = await _cloudinary.UploadAsync(uploadParams);
                 }
             }
-            return uploadResult;
+            return uploadResult; 
         }
 
         public async Task<DeletionResult> DeletePhotoAsync(string publicId)
         {
-            throw new NotImplementedException();
-        }
+            var deletionParams = new DeletionParams(publicId);
+
+            var result = await _cloudinary.DestroyAsync(deletionParams);
+            return result;
+;        }
     }
 }
