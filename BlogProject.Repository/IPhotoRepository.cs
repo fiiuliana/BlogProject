@@ -10,10 +10,10 @@ namespace BlogProject.Repository
 
     public interface IPhotoRepository
     {
-        public Task<Photo> InsertAsynk(PhotoCreate photoCreate, int applicationUserId);
-        public Task<Photo> GetAsynk(int photoId);
-        public Task<List<Photo>> GetAllBtUserIdAsynk(int applicationUserId);
-        public Task<int> DeleteAsynk(int photoId);
+        public Task<Photo> InsertAsync(PhotoCreate photoCreate, int applicationUserId);
+        public Task<Photo> GetAsync(int photoId);
+        public Task<List<Photo>> GetAllBtUserIdAsync(int applicationUserId);
+        public Task<int> DeleteAsync(int photoId);
 
     }
 }

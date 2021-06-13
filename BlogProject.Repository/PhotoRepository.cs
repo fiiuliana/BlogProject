@@ -20,7 +20,7 @@ namespace BlogProject.Repository
         {
             _config = config;
         }
-        public async Task<int> DeleteAsynk(int photoId)
+        public async Task<int> DeleteAsync(int photoId)
         {
             int affectedRows = 0;
 
@@ -36,7 +36,7 @@ namespace BlogProject.Repository
             return affectedRows;
         }
 
-        public async Task<List<Photo>> GetAllBtUserIdAsynk(int applicationUserId)
+        public async Task<List<Photo>> GetAllBtUserIdAsync(int applicationUserId)
         {
             IEnumerable<Photo> photos;
 
@@ -54,7 +54,7 @@ namespace BlogProject.Repository
             return photos.ToList();
         }
 
-        public async Task<Photo> GetAsynk(int photoId)
+        public async Task<Photo> GetAsync(int photoId)
         {
             Photo photo;
 
@@ -71,7 +71,7 @@ namespace BlogProject.Repository
             return photo;
         }
 
-        public async Task<Photo> InsertAsynk(PhotoCreate photoCreate, int applicationUserId)
+        public async Task<Photo> InsertAsync(PhotoCreate photoCreate, int applicationUserId)
         {
             var dataTable = new DataTable();
             dataTable.Columns.Add("PublicId", typeof(string));
@@ -91,7 +91,7 @@ namespace BlogProject.Repository
                     commandType: CommandType.StoredProcedure
                     );
             }
-            Photo photo = await GetAsynk(newPhotoId);
+            Photo photo = await GetAsync(newPhotoId);
             return photo;
         }
     }

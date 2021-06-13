@@ -11,7 +11,7 @@ namespace BlogProject.Repository
         //the result is going to be a "promise" - asynk
         public Task<IdentityResult> CreateAsync(ApplicationUserIdentity user, CancellationToken cancellationToken);
 
-        public Task<ApplicationUserIdentity> GetByUsernameAsynk(string normalizedUsername,
+        public Task<ApplicationUserIdentity> GetByUsernameAsync(string normalizedUsername,
             CancellationToken cancellationToken);  //just for the account repository - given
                                                    //if the registration process stops
     }

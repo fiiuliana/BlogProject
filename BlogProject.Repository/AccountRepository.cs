@@ -57,7 +57,7 @@ namespace BlogProject.Repository
             return IdentityResult.Success;
         }
 
-        public async Task<ApplicationUserIdentity> GetByUsernameAsynk(string normalizedUsername, CancellationToken cancellationToken)
+        public async Task<ApplicationUserIdentity> GetByUsernameAsync(string normalizedUsername, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
