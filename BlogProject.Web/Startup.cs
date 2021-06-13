@@ -3,6 +3,7 @@ using BlogProject.Models.Account;
 using BlogProject.Models.Settings;
 using BlogProject.Repository;
 using BlogProject.Services;
+using BlogProject.Web.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -100,9 +101,11 @@ namespace BlogProject.Web
             }
             app.UseStaticFiles();
 
+            app.ConfigureExceptionHandler();
+
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
