@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlogProject.Identity\BlogProject.Identity.csproj" />
     <ProjectReference Include="..\BlogProject.Models\BlogProject.Models.csproj" />
     <ProjectReference Include="..\BlogProject.Repository\BlogProject.Repository.csproj" />
     <ProjectReference Include="..\BlogProject.Services\BlogProject.Services.csproj" />
