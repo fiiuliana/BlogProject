@@ -1,4 +1,5 @@
 using BlogProject.Models.Settings;
+using BlogProject.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,10 @@ namespace BlogProject.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CloudinaryOptions>(Configuration.GetSection("CloudinaryOptions"));
+
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPhotoService, PhotoService>();
+
            // services.AddControllersWithViews();
         }
 

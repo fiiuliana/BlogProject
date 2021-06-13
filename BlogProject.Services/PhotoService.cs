@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BlogProject.Services
 {
-    class PhotoService : IPhotoService
+    public class PhotoService : IPhotoService
     {
         public readonly Cloudinary _cloudinary;
         public PhotoService(IOptions<CloudinaryOptions> config)
