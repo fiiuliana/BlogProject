@@ -1,32 +1,98 @@
 ﻿using BlogProject.Models.Photo;
+using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BlogProject.Repository
 {
+       
     public class PhotoRepository : IPhotoRepository
     {
-        public Task<Photo> DeleteAsynk(int photoId)
+        private readonly IConfiguration _config;
+
+        public PhotoRepository(IConfiguration config)
         {
-            throw new NotImplementedException();
+            _config = config;
+        }
+        public async Task<int> DeleteAsynk(int photoId)
+        {
+            int affectedRows = 0;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                affectedRows = await connection.ExecuteAsync(
+                    "Photo_Delete",
+                    new { PhotoId = photoId },
+                    commandType: CommandType.StoredProcedure);
+            }
+            return affectedRows;
         }
 
-        public Task<Photo> GetAllBtUserIdAsynk(int applicationUserId)
+        public async Task<List<Photo>> GetAllBtUserIdAsynk(int applicationUserId)
         {
-            throw new NotImplementedException();
+            IEnumerable<Photo> photos;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                photos = await connection.QueryAsync<Photo>(
+                    "Photo_GetByUserId",
+                    new { ApplicationUserId = applicationUserId },
+                    commandType: CommandType.StoredProcedure
+                    );
+            }
+
+            return photos.ToList();
         }
 
-        public Task<Photo> GetAsynk(int photoId)
+        public async Task<Photo> GetAsynk(int photoId)
         {
-            throw new NotImplementedException();
+            Photo photo;
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                photo = await connection.QueryFirstOrDefaultAsync<Photo>(
+                    "Photo_Get",
+                    new { PhotoId = photoId },
+                    commandType: CommandType.StoredProcedure
+                    );
+            }
+            return photo;
         }
 
-        public Task<Photo> InsertAsynk(PhotoCreate photoCreate, int applicationUserId)
+        public async Task<Photo> InsertAsynk(PhotoCreate photoCreate, int applicationUserId)
         {
-            throw new NotImplementedException();
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("PublicId", typeof(string));
+            dataTable.Columns.Add("ImageUrl", typeof(string));
+            dataTable.Columns.Add("Descriptio", typeof(string));
+
+            dataTable.Rows.Add(photoCreate.PublicId, photoCreate.ImageUrl, photoCreate.Description);
+
+            int newPhotoId;
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.OpenAsync();
+
+                newPhotoId = await connection.ExecuteScalarAsync<int>(
+                    "Photo_Insert",
+                    new { Photo = dataTable.AsTableValuedParameter("dbo.PhotoType") },
+                    commandType: CommandType.StoredProcedure
+                    );
+            }
+            Photo photo = await GetAsynk(newPhotoId);
+            return photo;
         }
     }
 }
