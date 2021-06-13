@@ -105,7 +105,18 @@ namespace BlogProject.Web
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            // security feature - website will only accept request from specific websites
+            if (env.IsDevelopment())
+            {
+                app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            }
+            else
+            {   // example in production - allow scripts only from ....
+                app.UseCors(options => options.WithOrigins("https://securewebsite"));
+            }
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
