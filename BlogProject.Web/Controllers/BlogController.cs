@@ -61,7 +61,7 @@ namespace BlogProject.Web.Controllers
         public async Task<ActionResult<Blog>> Get(int blogId)
         {
             var blog = await _blogRepository.GetAsync(blogId);
-            return Ok(blogs);
+            return Ok(blog);
         }
 
         // all the user's blogs
