@@ -12,7 +12,7 @@ namespace BlogProject.Models.Account
        
         [MinLength(10, ErrorMessage = "Must be at least 10-30 characters")]
         [MaxLength(30, ErrorMessage = "Must be at least 10-30 characters")]
-        public string Fullneme { get; set; }
+        public string Fullname { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
         [MaxLength(30, ErrorMessage = "Can be at most 30 characters")]

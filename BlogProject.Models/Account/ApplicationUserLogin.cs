@@ -18,6 +18,6 @@ namespace BlogProject.Models.Account
         [Required(ErrorMessage = "Password is required")]
         [MinLength(10, ErrorMessage = "Must be at least 10-50 characters")]
         [MaxLength(50, ErrorMessage = "Must be at least 10-50 characters")]
-        public string password { get; set; }
+        public string Password { get; set; }
     }
 }
