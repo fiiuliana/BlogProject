@@ -11,7 +11,7 @@ namespace BlogProject.Models.Account
     {
         [Required(ErrorMessage ="Username is required")]
         [MinLength(5, ErrorMessage ="Must be at least 5-20 characters")]
-        [MaxLength(5, ErrorMessage = "Must be at least 5-20 characters")]
+        [MaxLength(20, ErrorMessage = "Must be at least 5-20 characters")]
         public string Username{ get; set; }
 
 
