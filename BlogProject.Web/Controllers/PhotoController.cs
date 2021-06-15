@@ -62,7 +62,7 @@ namespace BlogProject.Web.Controllers
         {
             int applicationUserId = int.Parse(User.Claims.First(i => i.Type == JwtRegisteredClaimNames.NameId).Value);
 
-            var photos = await _photoRepository.GetAllBtUserIdAsync(applicationUserId);
+            var photos = await _photoRepository.GetAllByUserIdAsync(applicationUserId);
 
             return Ok(photos);
         }

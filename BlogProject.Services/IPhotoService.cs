@@ -8,7 +8,7 @@ namespace BlogProject.Services
     public interface IPhotoService
     {
       public Task<ImageUploadResult> AddPhotoAsync(IFormFile file);
-        public Task<DeletionResult> DeletePhotoAsync(string publicId);
+      public Task<DeletionResult> DeletePhotoAsync(string publicId);
 
     }
 }

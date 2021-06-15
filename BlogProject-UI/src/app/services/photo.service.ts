@@ -17,7 +17,7 @@ export class PhotoService {
       return this.http.post<Photo>(`${environment.webApi}/Photo`, model);
     }
 
-    getByapplicationUserId() : Observable<Photo[]>{
+    getByApplicationUserId() : Observable<Photo[]>{
       return this.http.get<Photo[]>(`${environment.webApi}/Photo`);
     }
 
