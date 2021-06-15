@@ -12,7 +12,7 @@ namespace BlogProject.Repository
     {
         public Task<Photo> InsertAsync(PhotoCreate photoCreate, int applicationUserId);
         public Task<Photo> GetAsync(int photoId);
-        public Task<List<Photo>> GetAllBtUserIdAsync(int applicationUserId);
+        public Task<List<Photo>> GetAllByUserIdAsync(int applicationUserId);
         public Task<int> DeleteAsync(int photoId);
 
     }
