@@ -24,7 +24,8 @@ import { PhotoAlbumComponent } from './components/photo-album/photo-album.compon
 import { RegisterComponent } from './components/register/register.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
     }),
+    BsDropdownModule.forRoot(),
+    CollapseModule.forRoot()
   ],
   providers: [
     HttpClient,
