@@ -47,7 +47,7 @@ namespace BlogProject.Web.Controllers
                 ApplicationUser applicationUser = new ApplicationUser()
                 {
                     ApplicationUserId = applicationUserIdentity.ApplicationUserId,
-                    UserName = applicationUserIdentity.Username,
+                    Username = applicationUserIdentity.Username,
                     Email = applicationUserIdentity.Email,
                     Fulname = applicationUserIdentity.Fullname,
                     Token = _tokenService.CreateToken(applicationUserIdentity)
@@ -74,7 +74,7 @@ namespace BlogProject.Web.Controllers
                     ApplicationUser applicationUser = new ApplicationUser()
                     {
                         ApplicationUserId = applicationUserIdentity.ApplicationUserId,
-                        UserName = applicationUserIdentity.Username,
+                        Username = applicationUserIdentity.Username,
                         Email = applicationUserIdentity.Email,
                         Fulname = applicationUserIdentity.Fullname,
                         Token = _tokenService.CreateToken(applicationUserIdentity)
