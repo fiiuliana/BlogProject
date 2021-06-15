@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   ) { 
     // if the user is logged in - redirect to the dashboard
     if (this.accountService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard']);
     }
   }
   // hook into a lifecicle of a specific component

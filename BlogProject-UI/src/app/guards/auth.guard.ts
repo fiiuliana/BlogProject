@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
         const isLoggedIn = currentUser && currentUser.token;
 
         //if the current exists 
-        if (isLoggedIn) {
+        if (this.accountService.isLoggedIn()) {
           return true;
         }
       
