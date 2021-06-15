@@ -9,6 +9,7 @@ import { Observable, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../services/account.service';
 import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -17,7 +18,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     //dependencies
     private toastr: ToastrService,
-  //  private router: Router,
+    private router: Router,
     private accountService: AccountService
 
   ) {}
@@ -74,7 +75,8 @@ export class ErrorInterceptor implements HttpInterceptor {
       this.toastr.error(errorMessage, error.statusCode);
       console.log(error.error);
     } else if (!!error.error) {
-      let errorMessage = ((typeof error.error) === 'string')  // if string just show it
+      let errorMessage = ((typeof error.error) === 'string')  // if string just show it 
+                                                  // right and left === has the same type and are the same thing
         ? error.error
         : 'There was a validation error.';   //else ... show the message
       this.toastr.error(errorMessage, error.statusCode);
@@ -90,7 +92,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     this.accountService.logout();
     this.toastr.error(errorMessage, error.statusText);
     //route to the login page
-   // this.router.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
 
   handle500Error(error: any) {
