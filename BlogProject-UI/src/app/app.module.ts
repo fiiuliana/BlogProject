@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SummaryPipe } from './pipes/summary.pipe';
 import { BlogComponent } from './components/blog-components/blog/blog.component';
 import { BlogCardComponent } from './components/blog-components/blog-card/blog-card.component';
@@ -47,11 +49,15 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    }),
   ],
   providers: [
-    HttpClient
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    HttpClient,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
