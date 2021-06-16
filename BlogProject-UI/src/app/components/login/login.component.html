@@ -3,7 +3,7 @@
         <div class="col-md-6 offset-md-3 mt-5">
 
             <h3 class="text-dark">Login</h3>
-            <p class="text-dark">Get to your dashboard and start blogging</p>
+            <p class="text-dark">Mergeţi la panoul de control şi începeţi să scrieti articole</p>
 
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
@@ -14,15 +14,15 @@
                                     'is-valid' : !hasErrors('username') && isTouched('username')}"
                         class="form-control form-control-lg"
                         formControlName="username"
-                        placeholder="Username">
+                        placeholder="Nume utilizator">
 
                     <div *ngIf="hasError('username', 'required')" class="invalid-feedback">
-                        Username is required
+                        Numele de utiliyator e obligatoriu
                     </div>
 
                     <div *ngIf="hasError('username', 'minlength') || hasError('username', 'maxlength')" 
                         class="invalid-feedback">
-                        Must be between 5-20 characters
+                        Intre 5 - 20 caractere
                     </div>
                 </div>
 
@@ -33,15 +33,15 @@
                                     'is-valid' : !hasErrors('password') && isTouched('password')}"
                         class="form-control form-control-lg"
                         formControlName="password"
-                        placeholder="Password">
+                        placeholder="Parola">
 
                     <div *ngIf="hasError('password', 'required')" class="invalid-feedback">
-                        Password is required
+                        Parola e obligatorie
                     </div>
 
                     <div *ngIf="hasError('password', 'minlength') || hasError('password', 'maxlength')" 
                         class="invalid-feedback">
-                        Must be between 10-50 characters
+                        Intre 10 - 50 caractere
                     </div>
                 </div>
 

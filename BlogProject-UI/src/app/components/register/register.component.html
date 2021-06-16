@@ -1,5 +1,5 @@
-<h3 class="text-dark">Don't Have An Account?</h3>
-<p class="text-dark">Just fill out the form and register</p>
+<h3 class="text-dark">Nu aveţi încă un cont?</h3>
+<p class="text-dark">Completați formularul și înregistrați-vă</p>
 
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
@@ -10,10 +10,10 @@
                         'is-valid' : !hasErrors('fullname') && isTouched('fullname')}"
             class="form-control form-control-lg"
             formControlName="fullname"
-            placeholder="Full Name">
+            placeholder="Numele complet">
 
         <div *ngIf="hasError('fullname', 'minlength') || hasError('fullname', 'maxlength')" class="invalid-feedback">
-            Must be between 10-30 characters
+            Intre 10 - 30 caractere
         </div>
     </div>
 
@@ -24,14 +24,13 @@
                         'is-valid' : !hasErrors('username') && isTouched('username')}"
             class="form-control form-control-lg"
             formControlName="username"
-            placeholder="Username">
+            placeholder="Nume utilizator">
 
         <div *ngIf="hasError('username', 'required')" class="invalid-feedback">
-            Username is required
+            Numele de  utilizator este obligatoriu
         </div>
 
         <div *ngIf="hasError('username', 'minlength') || hasError('username', 'maxlength')" class="invalid-feedback">
-            Must be between 5-20 characters
         </div>
     </div>
 
@@ -45,15 +44,15 @@
             placeholder="Email">
 
         <div *ngIf="hasError('email', 'required')" class="invalid-feedback">
-            Email is required
+            Email-ul este obligatoriu
         </div>
 
         <div *ngIf="hasError('email', 'pattern')" class="invalid-feedback">
-            Invalid email format
+            Email-ul este invalid
         </div>  
 
         <div *ngIf="hasError('email', 'maxlength')" class="invalid-feedback">
-            Can be at most 30 characters
+            Maxim 30 caractere
         </div>
     </div>
 
@@ -64,14 +63,14 @@
                         'is-valid' : !hasErrors('password') && isTouched('password')}"
             class="form-control form-control-lg"
             formControlName="password"
-            placeholder="Password">
+            placeholder="Parola">
 
         <div *ngIf="hasError('password', 'required')" class="invalid-feedback">
-            Password is required
+            Parola e obligatorie
         </div>
 
         <div *ngIf="hasError('password', 'minlength') || hasError('password', 'maxlength')" class="invalid-feedback">
-            Must be between 10-50 characters
+            Intre 10 - 50 caractere
         </div>
     </div>
 
@@ -86,18 +85,18 @@
                         && isTouched('confirmPassword')}"
             class="form-control form-control-lg"
             formControlName="confirmPassword"
-            placeholder="Confirm Password">
+            placeholder="Confirmă parola">
 
         <div *ngIf="hasError('confirmPassword', 'required')" class="invalid-feedback">
-            Confirm Password is required
+            Confirmarea parolei e obligatorie
         </div>
 
         <div *ngIf="formHasError('isMatching')" class="invalid-feedback">
-            Passwords do not match
+            Parolele nu coincid
         </div>
     </div>
 
     <button class="btn btn-block mb-3 bg-primary text-light"
-    [disabled]="!registerForm.valid">Register</button>
+    [disabled]="!registerForm.valid">Inregistrare</button>
 
 </form>
