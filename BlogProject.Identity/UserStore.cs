@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace BlogProject.Identity
 {
+
     public class UserStore :
         IUserStore<ApplicationUserIdentity>,
         IUserEmailStore<ApplicationUserIdentity>,

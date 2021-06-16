@@ -22,7 +22,7 @@ namespace BlogProject.Repository
         { 
             _config = config;   
         }
-
+        
         //Create a virtual table
         public async Task<IdentityResult> CreateAsync(ApplicationUserIdentity user, CancellationToken cancellationToken)
         {

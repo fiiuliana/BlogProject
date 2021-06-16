@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace BlogProject.Web.Controllers
 {
-    
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
