@@ -18,12 +18,13 @@ namespace BlogProject.Repository
         //installed package
         private readonly IConfiguration _config;
 
+        //want to get the configuration for the Web application and from that config - want the database connection
         public AccountRepository(IConfiguration config) // will access the appsettings.json
         { 
             _config = config;   
         }
         
-        //Create a virtual table
+       
         public async Task<IdentityResult> CreateAsync(ApplicationUserIdentity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -43,7 +44,7 @@ namespace BlogProject.Repository
                 user.Fullname,
                 user.PasswordHash
                 );
-            //open a connection with SqlServet
+            //open a connection with SqlServer
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"))) 
             {
                 //cancel if something goes wrong
@@ -56,7 +57,7 @@ namespace BlogProject.Repository
             }
             return IdentityResult.Success;
         }
-
+        
         public async Task<ApplicationUserIdentity> GetByUsernameAsync(string normalizedUsername, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -68,6 +69,7 @@ namespace BlogProject.Repository
                 //cancel if something goes wrong
                 await connection.OpenAsync(cancellationToken);
 
+                
                 applicationUser = await connection.QuerySingleOrDefaultAsync<ApplicationUserIdentity>(
                     "Account_GetByUsername", new { NormalizedUsername = normalizedUsername },
                     commandType: CommandType.StoredProcedure
