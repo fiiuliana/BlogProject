@@ -26,6 +26,11 @@ namespace BlogProject.Web.Controllers
         }
 
         //ednpoints
+        /// <summary>
+        /// POST: creates a blog
+        /// </summary>
+        /// <param name="blogCreate">The blogCreate </param>
+        /// <returns> the created blog</returns>
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<Blog>> Create(BlogCreate blogCreate)
@@ -48,7 +53,12 @@ namespace BlogProject.Web.Controllers
             return Ok(blog);
         }
 
-        //all blogs
+    
+        /// <summary>
+        /// GET: all the published blogs
+        /// </summary>
+        /// <param name="blogPaging"></param>
+        /// <returns>All the blogs</returns>
         [HttpGet]
         public async Task<ActionResult<PagedResults<Blog>>> GetAll([FromQuery] BlogPaging blogPaging)
         {
@@ -57,6 +67,11 @@ namespace BlogProject.Web.Controllers
         }
 
         // the individual blog
+        /// <summary>
+        /// GET: a specific blog depending on the ID
+        /// </summary>
+        /// <param name="blogId">The Id of the blog</param>
+        /// <returns> A specific blog</returns>
         [HttpGet("{blogId}")]
         public async Task<ActionResult<Blog>> Get(int blogId)
         {
@@ -65,6 +80,11 @@ namespace BlogProject.Web.Controllers
         }
 
         // all the user's blogs
+        /// <summary>
+        /// GET: all the blogs that belong to a specific user
+        /// </summary>
+        /// <param name="applicationUserId"> The ID of the user</param>
+        /// <returns>Blogs of the user</returns>
         [HttpGet("user/{applicationUserId}")]
         public async Task<ActionResult<List<Blog>>> GetByApplicationUserId(int applicationUserId)
         {
@@ -73,6 +93,10 @@ namespace BlogProject.Web.Controllers
         }
 
         // get all the famous blogs
+        /// <summary>
+        /// GET: 
+        /// </summary>
+        /// <returns>The first 6 blogs depending on the number of comments</returns>
         [HttpGet("famous")]
         public async Task<ActionResult<List<Blog>>> GetAllFamous()
         {
@@ -81,7 +105,11 @@ namespace BlogProject.Web.Controllers
             return Ok(blogs);
         }
 
-        //delete blogs
+        /// <summary>
+        /// DEL: deletes the desired blog 
+        /// </summary>
+        /// <param name="blogId"> The ID of the blog</param>
+        /// <returns> Ok message if action is successful</returns>
         [Authorize]
         [HttpDelete("{blogId}")]
         public async Task<ActionResult<int>> Delete(int blogId)
