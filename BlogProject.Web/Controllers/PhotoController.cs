@@ -30,7 +30,11 @@ namespace BlogProject.Web.Controllers
             _photoService = photoService;
         }
         //start creating endpoints
-
+        /// <summary>
+        /// POST: save the uploaded photo
+        /// </summary>
+        /// <param name="file"> the photo file</param>
+        /// <returns>the phto</returns>
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<Photo>> UploadPhoto(IFormFile file)
@@ -55,6 +59,7 @@ namespace BlogProject.Web.Controllers
 
             return Ok(photo);
         }
+       
 
         [Authorize]
         [HttpGet]
@@ -67,6 +72,11 @@ namespace BlogProject.Web.Controllers
             return Ok(photos);
         }
 
+        /// <summary>
+        /// GET: a photo with a specific ID
+        /// </summary>
+        /// <param name="photoId">The ID of the photo</param>
+        /// <returns>the photo</returns>
         [HttpGet("{photoId}")]
         public async Task<ActionResult<Photo>> Get(int photoId)
         {
@@ -75,6 +85,12 @@ namespace BlogProject.Web.Controllers
             return Ok(photo);
         }
 
+
+        /// <summary>
+        /// DEL: deletes an existing photo
+        /// </summary>
+        /// <param name="photoId"> The ID of the photo</param>
+        /// <returns> Ok message if successfull. The number of affected row</returns>
         [Authorize]
         [HttpDelete("{photoId}")]
         public async Task<ActionResult<int>> Delete(int photoId)

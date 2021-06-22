@@ -94,7 +94,7 @@ namespace BlogProject.Web.Controllers
 
         // get all the famous blogs
         /// <summary>
-        /// GET: 
+        /// GET: The firts 6 blogs based on number comments
         /// </summary>
         /// <returns>The first 6 blogs depending on the number of comments</returns>
         [HttpGet("famous")]

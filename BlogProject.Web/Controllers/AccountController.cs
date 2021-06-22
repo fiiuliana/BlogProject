@@ -32,10 +32,10 @@ namespace BlogProject.Web.Controllers
 
         // http://localhost:4200/api/Account/register - most likely
         /// <summary>
-        /// Register - Endpoint - POST request
+        /// POST: register a new account
         /// </summary>
         /// <param name="applicationUserCreate">the applicationUserCreate</param>
-        /// <returns>Application user</returns>
+        /// <returns>The user</returns>
         [HttpPost("register")]
         public async Task<ActionResult<ApplicationUser>> Register(ApplicationUserCreate applicationUserCreate)
         {    
@@ -72,10 +72,10 @@ namespace BlogProject.Web.Controllers
         }
 
         /// <summary>
-        /// Login - the second endpoint - POST request
+        /// POST: login in the user account
         /// </summary>
-        /// <param name="applicationUserLogin">applicationUserLogin</param>
-        /// <returns>the applicationUser</returns>
+        /// <param name="applicationUserLogin">The user login </param>
+        /// <returns>The user</returns>
         [HttpPost("login")]
         public async Task<ActionResult<ApplicationUser>> Login(ApplicationUserLogin applicationUserLogin)
         {

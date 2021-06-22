@@ -23,6 +23,11 @@ namespace BlogProject.Web.Controllers
             _blogCommentRepository = blogCommentRepository;
         }
 
+        /// <summary>
+        /// POST: creates a new comment
+        /// </summary>
+        /// <param name="blogCommentCreate"> The created blog</param>
+        /// <returns>The comment</returns>
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<BlogComment>> Create(BlogCommentCreate blogCommentCreate)
@@ -33,7 +38,11 @@ namespace BlogProject.Web.Controllers
 
             return Ok(createdBlogComment);
         }
-
+        /// <summary>
+        /// GET: all the blogs based on the ID
+        /// </summary>
+        /// <param name="blogId"> The Id of the blog</param>
+        /// <returns>The comment </returns>
         [HttpGet("{blogId}")]
         public async Task<ActionResult<List<BlogComment>>> GetAll(int blogId)
         {
@@ -42,6 +51,11 @@ namespace BlogProject.Web.Controllers
             return Ok(blogComments);
         }
 
+        /// <summary>
+        /// DEL: delete an existing comment
+        /// </summary>
+        /// <param name="blogCommentId">The Id of the blog</param>
+        /// <returns>Ok if the action is successfull. ID of the deleted blog</returns>
         [Authorize]
         [HttpDelete("{blogCommentId}")]
         public async Task<ActionResult<int>> Delete(int blogCommentId)
