@@ -33,6 +33,7 @@ export class CommentSystemComponent implements OnInit {
 
       for (let i=0; i<this.blogComments.length; i++) {
         if (!this.blogComments[i].parentBlogCommentId) {
+          //if it does not have a parent blog = a top comment
           this.findCommentReplies(this.blogCommentViewModels, i);
         }
       }
@@ -40,13 +41,67 @@ export class CommentSystemComponent implements OnInit {
     });
   }
 
-  findCommentReplies(blogCommentViewModels: BlogCommentViewModel[], i: number) {
-    throw new Error('Method not implemented.');
+  initComment(username: string) {
+    this.standAloneComment = {
+      parentBlogCommentId: null,
+      content: '',
+      blogId: this.blogId,
+      blogCommentId: -1,
+      username: username,
+      publishDate: null,
+      updateDate: null,
+      isEditable: false,
+      deleteConfirm: false,
+      isReplying: false,
+      comments: []
+    };
   }
 
-  
-  initComment(username: string) {
-    throw new Error('Method not implemented.');
+  findCommentReplies(blogCommentViewModels: BlogCommentViewModel[], index: number) {
+
+    let firstElement = this.blogComments[index];
+    let newComments: BlogCommentViewModel[] = [];
+
+    let commentViewModel: BlogCommentViewModel = {
+      parentBlogCommentId: firstElement.parentBlogCommentId || null,
+      content: firstElement.content,
+      blogId: firstElement.blogId,
+      blogCommentId: firstElement.blogCommentId,
+      username: firstElement.username,
+      publishDate: firstElement.publishDate,
+      updateDate: firstElement.updateDate,
+      isEditable: false,
+      deleteConfirm: false,
+      isReplying: false,
+      comments: newComments
+    }
+
+    blogCommentViewModels.push(commentViewModel);
+
+
+    for (let i=0; i<this.blogComments.length; i++) {
+      if (this.blogComments[i].parentBlogCommentId === firstElement.blogCommentId) {
+        this.findCommentReplies(newComments, i);
+      }
+    }  
   }
+
+  onCommentSaved(blogComment: BlogComment) {
+    let commentViewModel: BlogCommentViewModel = {
+      parentBlogCommentId: blogComment.parentBlogCommentId,
+      content: blogComment.content,
+      blogId: blogComment.blogId,
+      blogCommentId: blogComment.blogCommentId,
+      username: blogComment.username,
+      publishDate: blogComment.publishDate,
+      updateDate: blogComment.updateDate,
+      isEditable: false,
+      deleteConfirm: false,
+      isReplying: false,
+      comments: []
+    }
+
+    this.blogCommentViewModels.unshift(commentViewModel);
+  } 
 
 }

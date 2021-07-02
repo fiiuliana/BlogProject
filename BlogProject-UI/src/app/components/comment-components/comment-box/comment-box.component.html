@@ -1,1 +1,40 @@
-<p>comment-box works!</p>
+<form #commentForm="ngForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-group">
+        <textarea
+            name="commentContent"
+            #userCommentContent="ngModel"
+            [(ngModel)]="comment.content"
+            [ngClass]="{'is-invalid' : userCommentContent.errors && userCommentContent.touched}"
+            class="form-control mb-3"
+            rows="3"
+            required
+            minlength="10"
+            maxlength="300">
+        </textarea>
+
+        <div *ngIf="!!userCommentContent.errors?.required" class="invalid-feedback">
+            Nu se poate salva un comentariu gol
+        </div>
+
+        <div *ngIf="!!userCommentContent.errors?.minlength" class="invalid-feedback">
+            Intre 10 - 300 caractere
+        </div>
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-sm btn-success mr-1"
+        [disabled]="!commentForm.form.valid">
+        Salveaza
+    </button>
+
+    
+    <button 
+        type="reset"
+        class="btn btn-sm btn-warning" 
+        (click)="resetComment()">        
+        Reseteaza
+    </button>
+
+</form>

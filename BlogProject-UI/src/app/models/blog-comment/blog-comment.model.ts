@@ -6,7 +6,7 @@ export class BlogComment {
         public content: string,
         public username: string,
         public applicationUserId: number,
-        public publishedDate: Date,
+        public publishDate: Date,
         public updateDate: Date,
         public parentBlogCommentId?: number
     ) 
