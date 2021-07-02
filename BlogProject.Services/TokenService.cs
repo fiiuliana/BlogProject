@@ -11,23 +11,30 @@ using System.Threading.Tasks;
 
 namespace BlogProject.Services
 {
+    // in appsettings.json the JWt is created - issuer
     public class TokenService : ITokenService
     {
+
         private readonly SymmetricSecurityKey _key;
         private readonly string _issuer;
+
+
         public TokenService(IConfiguration config) 
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])); // it takes bytes; need to turn strings into bytes
             _issuer = config["Jwt:Issuer"];
         }
 
         public string CreateToken(ApplicationUserIdentity user)
         {
+            // get the claims ready
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.ApplicationUserId.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.Username)
             };
+
+
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             // before creating the token the params are created
@@ -38,6 +45,7 @@ namespace BlogProject.Services
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds
                 );
+
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
