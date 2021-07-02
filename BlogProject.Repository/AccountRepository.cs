@@ -28,7 +28,11 @@ namespace BlogProject.Repository
         public async Task<IdentityResult> CreateAsync(ApplicationUserIdentity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
+
+
+            //create a virtualtable
             var dataTable = new DataTable();
+
             dataTable.Columns.Add("Username", typeof(string));
             dataTable.Columns.Add("NormalizedUsername", typeof(string));
             dataTable.Columns.Add("Email", typeof(string));
@@ -44,6 +48,7 @@ namespace BlogProject.Repository
                 user.Fullname,
                 user.PasswordHash
                 );
+
             //open a connection with SqlServer
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"))) 
             {
@@ -51,7 +56,7 @@ namespace BlogProject.Repository
                 await connection.OpenAsync(cancellationToken);
 
                 //insert if all ok
-                await connection.ExecuteAsync("Account_Insert",
+                await connection.ExecuteAsync("Account_Insert",      // account insert = stored procedure in SQL DB
                     new { Account = dataTable.AsTableValuedParameter("dbo.AccountType") },
                     commandType: CommandType.StoredProcedure);
             }
@@ -71,7 +76,8 @@ namespace BlogProject.Repository
 
                 
                 applicationUser = await connection.QuerySingleOrDefaultAsync<ApplicationUserIdentity>(
-                    "Account_GetByUsername", new { NormalizedUsername = normalizedUsername },
+                    "Account_GetByUsername", 
+                    new { NormalizedUsername = normalizedUsername },
                     commandType: CommandType.StoredProcedure
                     );             
             }

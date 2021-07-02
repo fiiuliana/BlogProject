@@ -13,6 +13,7 @@ namespace BlogProject.Repository
 
         //just for the account repository - given if the registration process stops
         public Task<ApplicationUserIdentity> GetByUsernameAsync(string normalizedUsername,
-            CancellationToken cancellationToken);   //.Net core Identity gives this is somethig is cancelled
+            CancellationToken cancellationToken);   
+        //.Net core Identity gives this IF somethig is cancelled
     }
 }

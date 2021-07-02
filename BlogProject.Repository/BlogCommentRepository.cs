@@ -20,18 +20,20 @@ namespace BlogProject.Repository
         {
             _config = config;
         }
+
         public async Task<int> DeleteAsync(int blogCommentId)
         {
             int affectedRows = 0;
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
+            {  
+                //open a connection
                 await connection.OpenAsync();
 
-                affectedRows = await connection.ExecuteAsync(
+                affectedRows = await connection.ExecuteAsync( // from dapper
                     "BlogComment_Delete",
-                    new { BlogCommentId = blogCommentId },
-                    commandType: CommandType.StoredProcedure);
+                    new { BlogCommentId = blogCommentId }, // pass the id
+                    commandType: CommandType.StoredProcedure);  // procedure in SQL DB
             }
             return affectedRows;
         }
@@ -42,12 +44,14 @@ namespace BlogProject.Repository
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
+
+                //open the connection
                 await connection.OpenAsync();
 
                 blogComments = await connection.QueryAsync<BlogComment>(
                     "BlogComment_GetAll",
                     new { BlogId = blogId },
-                    commandType: CommandType.StoredProcedure
+                    commandType: CommandType.StoredProcedure // procedure in SQL DB
                     );
             }
             return blogComments.ToList();
@@ -58,13 +62,14 @@ namespace BlogProject.Repository
             BlogComment blogComment;
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
+            { 
+                //open a connection
                 await connection.OpenAsync();
 
                 blogComment = await connection.QueryFirstOrDefaultAsync<BlogComment>(
                     "BlogComment_Get",
-                    new { BlogCommentId = blogCommentId },
-                    commandType: CommandType.StoredProcedure
+                    new { BlogCommentId = blogCommentId },  // pass the parameter
+                    commandType: CommandType.StoredProcedure // procedure in SQL DB
                     );
             }
             return blogComment;
@@ -72,6 +77,7 @@ namespace BlogProject.Repository
 
         public async Task<BlogComment> UpsertAsync(BlogCommentCreate blogCommentCreate, int applicationUserId)
         {
+            //create a new table
             var dataTable = new DataTable();
             dataTable.Columns.Add("BlogCommentId", typeof(int));
             dataTable.Columns.Add("ParentBlogCommentId", typeof(int));
@@ -88,17 +94,19 @@ namespace BlogProject.Repository
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
+               // open a connection     
                 await connection.OpenAsync();
 
                 newBlogCommentId = await connection.ExecuteScalarAsync<int?>(
                     "BlogComment_Upsert",
-                    new { BlogComment = dataTable.AsTableValuedParameter("dbo.BlogCommentType"),
+                    new { BlogComment = dataTable.AsTableValuedParameter("dbo.BlogCommentType"), // pass the object
                     ApplicationUserId = applicationUserId
                     },
-                    commandType: CommandType.StoredProcedure
+                    commandType: CommandType.StoredProcedure   // procedure in SQL DB
                     );
             }
 
+            // 
             newBlogCommentId = newBlogCommentId ?? blogCommentCreate.BlogCommentId;
 
             BlogComment blogComment = await GetAsync(newBlogCommentId.Value);

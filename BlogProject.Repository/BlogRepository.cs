@@ -20,39 +20,45 @@ namespace BlogProject.Repository
         {
             _config = config;
         }
+
+
         public async Task<int> DeleteAsync(int blogId)
         {
             int affectedRows = 0;
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
+            { 
+                //open a connection
                 await connection.OpenAsync();
 
                 affectedRows = await connection.ExecuteAsync(
                     "Blog_Delete",
                     new { BlogId = blogId },
-                    commandType: CommandType.StoredProcedure);
+                    commandType: CommandType.StoredProcedure); // procedure in SQL DB
             }
             return affectedRows;
         }
 
+
         public async Task<PagedResults<Blog>> getAllAsync(BlogPaging blogPaging)
         {
             var results = new PagedResults<Blog>();
+
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
+                // open a connection
                 await connection.OpenAsync();
 
-                using (var multi = await connection.QueryMultipleAsync(
+                using (var multi = await connection.QueryMultipleAsync( // getting multiple results from the stored procedure
                     "Blog_GetAll",
                     new
-                    {
-                        Offset = (blogPaging.Page - 1) * blogPaging.Pagesize,
+                    { 
+                        Offset = (blogPaging.Page - 1) * blogPaging.Pagesize,  // calculate the offset and pass to SQL
                         PageSize = blogPaging.Pagesize
                     },
-                    commandType: CommandType.StoredProcedure))
+                    commandType: CommandType.StoredProcedure)) // procedure in SQL DB
                 {
-                    results.Items = multi.Read<Blog>();
+                    results.Items = multi.Read<Blog>();     //getting the results from the query
                     results.TotalCount = multi.ReadFirst<int>();
                 }
             }
@@ -61,16 +67,17 @@ namespace BlogProject.Repository
 
         public async Task<List<Blog>> GetAllByUserIdAsync(int applicationUserId)
         {
-            IEnumerable<Blog> blogs;
+            IEnumerable<Blog> blogs; 
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
+            { 
+                // open a connection
                 await connection.OpenAsync();
 
                 blogs = await connection.QueryAsync<Blog>(
                     "Blog_GetByUserId",
                     new { ApplicationUserId = applicationUserId },
-                    commandType: CommandType.StoredProcedure
+                    commandType: CommandType.StoredProcedure              // procedure in SQL DB
                     );
             }
             return blogs.ToList();
@@ -82,17 +89,19 @@ namespace BlogProject.Repository
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
+                // open a connection
                 await connection.OpenAsync();
 
                 famousBlogs = await connection.QueryAsync<Blog>(
                     "Blog_GetAllFamous",
                     //initialize an empty list
                     new {  },
-                    commandType: CommandType.StoredProcedure
+                    commandType: CommandType.StoredProcedure   // procedure in SQL DB
                     );
             }
             return famousBlogs.ToList();
         }
+
 
         public async Task<Blog> GetAsync(int blogId)
         {
@@ -100,12 +109,13 @@ namespace BlogProject.Repository
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
+                //open a connection
                 await connection.OpenAsync();
 
                 blog = await connection.QueryFirstOrDefaultAsync<Blog>(
                     "Blog_Get",
-                    new { BlogId = blogId },
-                    commandType: CommandType.StoredProcedure
+                    new { BlogId = blogId }, // passing the parameter for the stored procedure
+                    commandType: CommandType.StoredProcedure   // procedure in SQL DB
                     );
             }
             return blog;
@@ -113,6 +123,7 @@ namespace BlogProject.Repository
 
         public async Task<Blog> UpsertAsync(BlogCreate blogCreate, int applicationUserId)
         {
+            // new data table
             var dataTable = new DataTable();
             dataTable.Columns.Add("BlogId", typeof(int));
             dataTable.Columns.Add("Title", typeof(string));
@@ -125,20 +136,23 @@ namespace BlogProject.Repository
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
+                //open a connection and grab the above
                 await connection.OpenAsync();
 
                 newBlogId = await connection.ExecuteScalarAsync<int?>(
                     "Blog_Upsert",
                     new
                     {
-                        Blog = dataTable.AsTableValuedParameter("dbo.BlogType"),
-                        ApplicationUserId = applicationUserId
+                        Blog = dataTable.AsTableValuedParameter("dbo.BlogType"),  // pass in the object
+                        ApplicationUserId = applicationUserId                     
                     },
-                    commandType: CommandType.StoredProcedure
+                    commandType: CommandType.StoredProcedure  // procedure in SQL DB
                     );
             }
+
+            // the update will not return a new one, but the initial
             newBlogId = newBlogId ?? blogCreate.blogId;
-            Blog blog = await GetAsync(newBlogId.Value);
+            Blog blog = await GetAsync(newBlogId.Value);  // pass the new values
             return blog;
         }
     }
